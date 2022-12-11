@@ -156,7 +156,7 @@ if ! shopt -oq posix; then
 fi
 
 # Java
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export JAVA_HOME=$(update-alternatives --display java | grep currently | cut -d ' ' -f 7 | cut -d '/' -f 1-5)
 export PATH=$PATH:$JAVA_HOME/bin
 
 # golang
