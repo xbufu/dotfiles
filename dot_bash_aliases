@@ -1,0 +1,7 @@
+alias full-update='apt update && apt upgrade -y && apt autoremove -y && apt autoclean -y'
+alias up='python3 -m http.server 80'
+alias vi='nvim'
+alias pyenv2='virtualenv -p /usr/bin/python2 venv && source venv/bin/activate'
+alias pyenv3='virtualenv -p /usr/bin/python3 venv && source venv/bin/activate'
+alias xfreerdp='xfreerdp +clipboard /dynamic-resolution /cert:ignore'
+alias smbserver='smbserver.py -smb2support TMP .'
