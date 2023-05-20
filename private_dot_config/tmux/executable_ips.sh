@@ -20,6 +20,9 @@ then
 elif [ -d /proc/sys/net/ipv4/conf/eth0 ]
 then
         HOST="eth0 $({ ip -4 -br a sh dev eth0 | awk {'print $3'} | cut -f1 -d/; } 2>/dev/null)"
+elif [ -d /proc/sys/net/ipv4/conf/ens192 ]
+then
+        HOST="ens192 $({ ip -4 -br a sh dev ens192 | awk {'print $3'} | cut -f1 -d/; } 2>/dev/null)"
 fi
 
 if [ ! -z "$BOX" ]
