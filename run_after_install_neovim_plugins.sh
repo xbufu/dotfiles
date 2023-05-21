@@ -1,3 +1,3 @@
 #!/bin/sh
 
-nvim +'PlugInstall --sync' +qa
+nvim --headless +PlugInstall +qa
