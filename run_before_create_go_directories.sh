@@ -2,5 +2,6 @@
 
 if [ ! -d "$HOME/go" ]
 then
-    mkdir -p "$HOME/go/{bin,src}"
+    mkdir -p "$HOME/go/bin"
+    mkdir -p "$HOME/go/src"
 fi
