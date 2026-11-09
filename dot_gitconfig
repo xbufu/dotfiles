@@ -17,8 +17,31 @@
 [includeIf "gitdir:~/hm/"]
   path = ~/.gitconfig-hm
 
+# Identity by folder (also covers repos without a remote yet)
 [includeIf "gitdir:~/forgejo/"]
-  path = .gitconfig_forgejo
-    
+  path = ~/.gitconfig_forgejo
+
 [includeIf "gitdir:~/github/"]
-  path = .gitconfig_github
+  path = ~/.gitconfig_github
+
+# Identity by remote URL (works anywhere, e.g. ~/.local/share/chezmoi)
+[includeIf "hasconfig:remote.*.url:ssh://git@git.bufu-sec.me:2222/**"]
+  path = ~/.gitconfig_forgejo
+
+[includeIf "hasconfig:remote.*.url:https://git.bufu-sec.me/**"]
+  path = ~/.gitconfig_forgejo
+
+[includeIf "hasconfig:remote.*.url:git@gitlab.lrz.de:*/**"]
+  path = ~/.gitconfig-hm
+
+[includeIf "hasconfig:remote.*.url:ssh://git@gitlab.lrz.de/**"]
+  path = ~/.gitconfig-hm
+
+[includeIf "hasconfig:remote.*.url:https://gitlab.lrz.de/**"]
+  path = ~/.gitconfig-hm
+
+[includeIf "hasconfig:remote.*.url:git@github.com:*/**"]
+  path = ~/.gitconfig_github
+
+[includeIf "hasconfig:remote.*.url:https://github.com/**"]
+  path = ~/.gitconfig_github
