@@ -2,6 +2,8 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+[ -f ~/.config/fj/env ] && . ~/.config/fj/env
+
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
@@ -122,3 +124,17 @@ export PATH=$PATH:$HOME/.local/bin
 # Go
 export GOPATH=$HOME/.go
 export PATH=$PATH:$GOPATH/bin
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+sudo service pcscd start
+export PATH=$PATH:/usr/local/go/bin
+
+complete -C /usr/bin/tofu tofu
+
+export ANDROID_HOME=$HOME/Android/Sdk
+export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
+
+[ -f ~/.config/shell/secrets.sh ] && . ~/.config/shell/secrets.sh

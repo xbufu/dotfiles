@@ -1,0 +1,11 @@
+{{ if eq .kind "windows" }}
+.bashrc
+.bash_aliases
+.tmux.conf
+.hushlogin
+.config/tmux/
+.config/nvim/
+{{ end }}
+{{ if not .personal }}
+.config/shell/secrets.sh
+{{ end }}

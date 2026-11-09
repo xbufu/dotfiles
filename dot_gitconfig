@@ -1,6 +1,6 @@
 [user]
-  name = Bufu
-  email = bufu@bufu-sec.com
+	name = Bufu
+	email = 49696158+xbufu@users.noreply.github.com
 
 [pull]
   rebase = False
@@ -13,3 +13,12 @@
 
 [color]
   ui = auto
+
+[includeIf "gitdir:~/hm/"]
+  path = ~/.gitconfig-hm
+
+[includeIf "gitdir:~/forgejo/"]
+  path = .gitconfig_forgejo
+    
+[includeIf "gitdir:~/github/"]
+  path = .gitconfig_github

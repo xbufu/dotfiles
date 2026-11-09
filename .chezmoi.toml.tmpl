@@ -1,0 +1,32 @@
+{{- /* Public age key from ~/.config/chezmoi/key.txt; not secret. */ -}}
+{{- $ageRecipient := "age1cnr08tdm7cpmlnfjkw90n0l7ejefgqph9z2ashy4xu9z4klp5c3sz03vyu" -}}
+
+{{- $kind := "server" -}}
+{{- if eq .chezmoi.os "windows" -}}
+{{-   $kind = "windows" -}}
+{{- else if .chezmoi.kernel.osrelease | lower | contains "microsoft" -}}
+{{-   $kind = "wsl" -}}
+{{- end -}}
+
+{{- /* WSL inherits the Windows hostname, so one name covers both. */ -}}
+{{- $device := "" -}}
+{{- if eq .chezmoi.hostname "framework" -}}
+{{-   $device = "laptop" -}}
+{{- else if eq .chezmoi.hostname "workstation" -}}
+{{-   $device = "workstation" -}}
+{{- end -}}
+{{- $personal := ne $device "" -}}
+
+sourceDir = {{ .chezmoi.sourceDir | quote }}
+
+{{- if $personal }}
+encryption = "age"
+[age]
+  identity  = {{ joinPath .chezmoi.homeDir ".config/chezmoi/key.txt" | quote }}
+  recipient = {{ $ageRecipient | quote }}
+{{- end }}
+
+[data]
+  kind     = {{ $kind | quote }}
+  device   = {{ $device | quote }}
+  personal = {{ $personal }}

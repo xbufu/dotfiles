@@ -1,0 +1,5 @@
+{{- if ne .chezmoi.os "windows" -}}
+#!/bin/sh
+
+nvim --headless +PlugInstall +qa
+{{ end -}}
