@@ -1,3 +1,4 @@
+.ssh/known_hosts.old
 {{ if eq .kind "windows" }}
 .bashrc
 .bash_aliases
@@ -8,4 +9,6 @@
 {{ end }}
 {{ if not .personal }}
 .config/shell/secrets.sh
+.ssh
+.ssh/**
 {{ end }}
