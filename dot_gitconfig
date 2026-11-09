@@ -1,0 +1,15 @@
+[user]
+  name = Bufu
+  email = bufu@bufu-sec.com
+
+[pull]
+  rebase = False
+
+[core]
+  editor = nvim
+
+[init]
+  defaultBranch = main
+
+[color]
+  ui = auto
