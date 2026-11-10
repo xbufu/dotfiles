@@ -1,3 +1,10 @@
+{{- /* Kali: its default bashrc (kali-defaults usr/share/kali-defaults/etc/skel/.bashrc) plus the dev paths, nothing personal. */ -}}
+{{- if eq (dig "osRelease" "id" "" .chezmoi) "kali" -}}
+{{ template "kali-bashrc" . }}
+# --- Personal additions ---
+
+{{ template "dev-paths" . }}
+{{- else -}}
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -138,3 +145,4 @@ export ANDROID_HOME=$HOME/Android/Sdk
 export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
 
 [ -f ~/.config/shell/secrets.sh ] && . ~/.config/shell/secrets.sh
+{{- end }}

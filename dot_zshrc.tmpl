@@ -1,0 +1,10 @@
+{{- /* Kali default zshrc (kali-defaults etc/skel/.zshrc) plus aliases and dev paths. */ -}}
+{{ template "kali-zshrc" . }}
+# --- Personal additions ---
+
+# Aliases, shared with bash through ~/.bash_aliases
+if [ -f ~/.zsh_aliases ]; then
+    . ~/.zsh_aliases
+fi
+
+{{ template "dev-paths" . }}
