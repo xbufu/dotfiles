@@ -10,7 +10,8 @@
 .config/nvim/
 {{ end }}
 {{ if not .personal }}
-.config/shell/secrets.sh
+.config/shell/secrets.sh*
+.config/fj/
 .ssh
 .ssh/**
 {{ end }}
