@@ -1,3 +1,5 @@
+# Changes on every new host; each machine keeps its own.
+.ssh/known_hosts
 .ssh/known_hosts.old
 {{ if eq .kind "windows" }}
 .bashrc
