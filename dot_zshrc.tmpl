@@ -7,4 +7,8 @@ if [ -f ~/.zsh_aliases ]; then
     . ~/.zsh_aliases
 fi
 
+# bash-style completions (pipx via argcomplete), as `pipx completions` asks
+autoload -U bashcompinit
+bashcompinit
+
 {{ template "dev-paths" . }}
