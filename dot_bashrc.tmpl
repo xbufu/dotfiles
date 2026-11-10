@@ -128,6 +128,9 @@ fi
 # Python
 export PATH=$PATH:$HOME/.local/bin
 
+# pipx completions (bash and zsh)
+command -v register-python-argcomplete >/dev/null && command -v pipx >/dev/null && eval "$(register-python-argcomplete pipx)"
+
 # Go
 export GOPATH=$HOME/.go
 export PATH=$PATH:$GOPATH/bin
@@ -136,7 +139,9 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+{{ if .personal -}}
 sudo service pcscd start
+{{ end -}}
 export PATH=$PATH:/usr/local/go/bin
 
 complete -C /usr/bin/tofu tofu
