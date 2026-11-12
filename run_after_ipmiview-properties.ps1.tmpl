@@ -1,0 +1,38 @@
+{{- /* Renders empty (skipped) where IPMIView isn't installed. */ -}}
+{{- if and (eq .kind "windows") (has .device (list "workstation" "laptop")) (stat "C:/Program Files/SUPERMICRO/IPMIView") -}}
+# Supermicro IPMIView server list and saved logins. They live under Program Files (outside ~),
+# so chezmoi can't manage them as plain files: this script runs on every apply, decrypts the
+# age copies in .ipmiview/ and rewrites any target that differs (also reverting GUI changes).
+# Decrypting here rather than in the template keeps the contents out of chezmoi diff output.
+# Elevates through UAC only when something needs rewriting; only paths go on the command line.
+$ErrorActionPreference = 'Stop'
+$age      = (Get-Command age).Source
+$identity = '{{ .chezmoi.config.age.identity }}'
+$srcDir   = '{{ joinPath .chezmoi.sourceDir ".ipmiview" }}'
+$dstDir   = 'C:\Program Files\SUPERMICRO\IPMIView'
+
+function Decrypt([string]$src) {
+    $psi = New-Object Diagnostics.ProcessStartInfo $age, "-d -i `"$identity`" `"$src`""
+    $psi.UseShellExecute = $false; $psi.RedirectStandardOutput = $true
+    $p = [Diagnostics.Process]::Start($psi)
+    $ms = New-Object IO.MemoryStream
+    $p.StandardOutput.BaseStream.CopyTo($ms); $p.WaitForExit()
+    if ($p.ExitCode -ne 0) { throw "ipmiview: age failed on $src" }
+    $ms.ToArray()
+}
+
+$stale = foreach ($name in 'IPMIView.properties', 'account.properties') {
+    $src = Join-Path $srcDir "$name.age"; $dst = Join-Path $dstDir $name
+    $want = [Convert]::ToBase64String((Decrypt $src))
+    $have = if (Test-Path -LiteralPath $dst) { [Convert]::ToBase64String([IO.File]::ReadAllBytes($dst)) }
+    if ($want -cne $have) { , @($src, $dst) }
+}
+if (-not $stale) { exit 0 }
+
+$cmds = foreach ($s in $stale) { "& '$age' -d -i '$identity' -o '$($s[1])' '$($s[0])'; if (`$LASTEXITCODE) { exit 1 }" }
+$encoded = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($cmds -join "`n"))
+$p = Start-Process powershell -Verb RunAs -Wait -PassThru -WindowStyle Hidden `
+    -ArgumentList '-NoProfile', '-NonInteractive', '-EncodedCommand', $encoded
+if ($p.ExitCode -ne 0) { throw "ipmiview: elevated write failed (exit $($p.ExitCode))" }
+foreach ($s in $stale) { Write-Host "ipmiview: updated $($s[1])" }
+{{ end -}}
