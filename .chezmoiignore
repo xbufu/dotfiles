@@ -18,6 +18,7 @@
 {{ end }}
 {{ if ne .kind "desktop" }}
 .config/fish/
+.p10k.zsh
 {{ end }}
 {{ if or (not .personal) (eq .kind "windows") }}
 .claude
