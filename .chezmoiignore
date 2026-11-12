@@ -2,6 +2,11 @@
 .ssh/known_hosts
 .ssh/known_hosts.old
 {{ if eq .kind "windows" }}
+# Linux-only tool configs (Windows tools read %AppData%)
+.npmrc
+.config/gh/
+.config/glab-cli/
+.config/sops/
 .bashrc
 .bash_aliases
 .zshrc
@@ -27,4 +32,13 @@
 .ssh/**
 openvpn
 openvpn/**
+{{ end }}
+{{ if ne .kind "windows" }}
+.wslconfig
+AppData/
+{{ end }}
+{{ if eq .kind "wsl" }}
+# ~/.aws is a symlink to the Windows profile in WSL
+.aws
+.aws/**
 {{ end }}
