@@ -1,9 +1,9 @@
 {{- if and .personal (ne .kind "windows") -}}
 #!/bin/bash
-# Own Claude skills: clone bufu/skills to ~/tmp/skills once, link every skill folder into ~/.claude/skills.
-# Updates stay manual (git -C ~/tmp/skills pull) so local edits are never overwritten.
+# Own Claude skills: clone bufu/skills to ~/code/tools/skills once, link every skill folder into ~/.claude/skills.
+# Updates stay manual (git -C ~/code/tools/skills pull) so local edits are never overwritten.
 set -u
-dir="$HOME/tmp/skills"
+dir="$HOME/code/tools/skills"
 if [ ! -d "$dir/.git" ]; then
     git clone -q ssh://git@git.bufu-sec.me:2222/bufu/skills.git "$dir" || { echo "claude-own-skills: clone failed, skipped" >&2; exit 0; }
 fi

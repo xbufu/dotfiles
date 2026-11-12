@@ -30,6 +30,13 @@
   stripComponents = 4
   include = ["*/.claude/skills/impeccable", "*/.claude/skills/impeccable/**"]
   refreshPeriod = "168h"
+[".claude/skills/unslop"]
+  type = "archive"
+  url = "https://github.com/heydamir/unslop/archive/HEAD.tar.gz"
+  exact = true
+  stripComponents = 3
+  include = ["*/skills/unslop", "*/skills/unslop/**"]
+  refreshPeriod = "168h"
 {{ range list "asset-producer" "documenter" "finish-reviewer" "manual-edit-applier" }}
 [".claude/agents/impeccable-{{ . }}.md"]
   type = "archive-file"

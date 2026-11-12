@@ -18,7 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 {{ .chezmoi.homeDir }}/tmp/skills/hooks/graph-first.py",
+            "command": "python3 {{ .chezmoi.homeDir }}/code/tools/skills/hooks/graph-first.py",
             "timeout": 5
           }
         ]
@@ -30,7 +30,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash {{ .chezmoi.homeDir }}/tmp/skills/hooks/after-compact.sh"
+            "command": "bash {{ .chezmoi.homeDir }}/code/tools/skills/hooks/after-compact.sh"
           }
         ]
       }
