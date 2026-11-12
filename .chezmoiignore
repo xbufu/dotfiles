@@ -20,6 +20,8 @@
 {{ end }}
 {{ if not .personal }}
 .config/shell/secrets.sh*
+.config/secrets/
+.config/secrets/**
 .config/fj/
 .ssh
 .ssh/**
