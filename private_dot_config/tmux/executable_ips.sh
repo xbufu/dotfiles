@@ -23,6 +23,10 @@ then
 elif [ -d /proc/sys/net/ipv4/conf/ens192 ]
 then
         HOST="ens192 $({ ip -4 -br a sh dev ens192 | awk {'print $3'} | cut -f1 -d/; } 2>/dev/null)"
+else
+        # Workstation: Interface der Default-Route (enp*/wlan*)
+        IF="$(ip -4 route show default 2>/dev/null | awk '{print $5; exit}')"
+        [ -n "$IF" ] && HOST="$IF $({ ip -4 -br a sh dev "$IF" | awk {'print $3'} | cut -f1 -d/; } 2>/dev/null)"
 fi
 
 if [ ! -z "$BOX" ]
