@@ -11,6 +11,9 @@
 .config/tmux/
 .config/nvim/
 {{ end }}
+{{ if ne .kind "desktop" }}
+.config/fish/
+{{ end }}
 {{ if not .personal }}
 .config/shell/secrets.sh*
 .config/fj/

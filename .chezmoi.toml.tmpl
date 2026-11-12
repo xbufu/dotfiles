@@ -6,6 +6,8 @@
 {{-   $kind = "windows" -}}
 {{- else if .chezmoi.kernel.osrelease | lower | contains "microsoft" -}}
 {{-   $kind = "wsl" -}}
+{{- else if eq (dig "osRelease" "id" "" .chezmoi) "cachyos" -}}
+{{-   $kind = "desktop" -}}
 {{- end -}}
 
 {{- /* WSL inherits the Windows hostname, so one name covers both. */ -}}

@@ -4,6 +4,18 @@
 # --- Personal additions ---
 
 {{ template "dev-paths" . }}
+{{- else if eq .kind "desktop" -}}
+{{- /* CachyOS: no own bashrc, Arch default (bash package dot.bashrc) plus personal additions. */ -}}
+[ -f ~/.config/fj/env ] && . ~/.config/fj/env
+
+{{ template "arch-bashrc" . }}
+# --- Personal additions ---
+
+[ -f ~/.bash_aliases ] && . ~/.bash_aliases
+
+{{ template "dev-paths" . }}
+
+[ -f ~/.config/shell/secrets.sh ] && . ~/.config/shell/secrets.sh
 {{- else -}}
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
