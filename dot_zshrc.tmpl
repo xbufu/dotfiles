@@ -1,3 +1,22 @@
+{{- if eq .kind "desktop" -}}
+{{- /* CachyOS: its default zshrc (cachyos-zsh-config etc/skel/.zshrc: oh-my-zsh, powerlevel10k, autosuggestions, syntax highlighting) plus personal additions. */ -}}
+# Before the CachyOS config: powerlevel10k's instant prompt must come after anything that prints or asks.
+[ -f ~/.config/fj/env ] && . ~/.config/fj/env
+
+source /usr/share/cachyos-zsh-config/cachyos-config.zsh
+
+# --- Personal additions ---
+
+# Aliases, one list shared with bash (.chezmoitemplates/aliases); loaded after the CachyOS aliases, so ours win
+[ -f ~/.zsh_aliases ] && . ~/.zsh_aliases
+
+# bash-style completions (pipx via argcomplete), as `pipx completions` asks
+autoload -U bashcompinit
+bashcompinit
+
+{{ template "dev-paths" . }}
+[ -f ~/.config/shell/secrets.sh ] && . ~/.config/shell/secrets.sh
+{{- else -}}
 {{- /* Kali default zshrc (kali-defaults etc/skel/.zshrc) plus aliases and dev paths. */ -}}
 {{ template "kali-zshrc" . }}
 # --- Personal additions ---
@@ -12,3 +31,4 @@ autoload -U bashcompinit
 bashcompinit
 
 {{ template "dev-paths" . }}
+{{- end }}
