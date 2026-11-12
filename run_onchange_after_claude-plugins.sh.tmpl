@@ -1,0 +1,64 @@
+{{- if and .personal (ne .kind "windows") -}}
+#!/bin/bash
+# Claude plugins + graphify. Runs again whenever this file changes (run_onchange_).
+# "marketplace add" must come before "plugin install"; it resets autoUpdate, so that is set afterwards.
+set -u
+command -v claude >/dev/null || { echo "claude-plugins: claude not installed, skipped" >&2; exit 0; }
+
+markets=(
+    "claude-plugins-official anthropics/claude-plugins-official"
+    "ponytail DietrichGebert/ponytail"
+    "ui-ux-pro-max-skill nextlevelbuilder/ui-ux-pro-max-skill"
+    "caveman JuliusBrussee/caveman"
+    "fullstack-dev-skills jeffallan/claude-skills"
+    "ecc https://github.com/affaan-m/ECC.git"
+    "sentry-skills getsentry/skills"
+    "addy-agent-skills addyosmani/agent-skills"
+)
+plugins=(
+    ponytail@ponytail
+    frontend-design@claude-plugins-official
+    typescript-lsp@claude-plugins-official
+    clangd-lsp@claude-plugins-official
+    gopls-lsp@claude-plugins-official
+    pyright-lsp@claude-plugins-official
+    claude-md-management@anthropic-plugin-directory
+    ui-ux-pro-max@ui-ux-pro-max-skill
+    caveman@caveman
+    fullstack-dev-skills@fullstack-dev-skills
+    ecc@ecc
+    sentry-skills@sentry-skills
+    agent-skills@addy-agent-skills
+)
+
+json_field() { python3 -c 'import json,sys; print("\n".join(x[sys.argv[1]] for x in json.load(sys.stdin)))' "$1"; }
+
+known=$(claude plugin marketplace list --json </dev/null | json_field name)
+for m in "${markets[@]}"; do
+    read -r name src <<<"$m"
+    grep -qxF "$name" <<<"$known" || claude plugin marketplace add "$src" </dev/null || echo "claude-plugins: marketplace $name failed" >&2
+done
+
+failed=()
+installed=$(claude plugin list --json </dev/null | json_field id)
+for p in "${plugins[@]}"; do
+    grep -qxF "$p" <<<"$installed" || claude plugin install "$p" --scope user </dev/null || failed+=("$p")
+done
+[ ${#failed[@]} -eq 0 ] || echo "claude-plugins: FAILED ${failed[*]}" >&2
+
+python3 - "$HOME/.claude/settings.json" <<'PY'
+import json, sys
+path = sys.argv[1]
+with open(path) as f:
+    s = json.load(f)
+for m in s.get("extraKnownMarketplaces", {}).values():
+    m["autoUpdate"] = True
+with open(path, "w") as f:
+    json.dump(s, f, indent=2)
+    f.write("\n")
+PY
+
+command -v graphify >/dev/null || pipx install graphifyy || echo "claude-plugins: graphify install failed" >&2
+[ -f "$HOME/.claude/skills/graphify/SKILL.md" ] || { command -v graphify >/dev/null && graphify install --platform claude; }
+exit 0
+{{ end -}}

@@ -1,0 +1,39 @@
+{
+  "model": "opus",
+  "effortLevel": "high",
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "medium"
+    },
+    "claude-sonnet-5-5": {
+      "effortLevel": "medium"
+    }
+  },
+  "remoteControlAtStartup": true,
+  "agentPushNotifEnabled": true,
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Grep",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 {{ .chezmoi.homeDir }}/tmp/skills/hooks/graph-first.py",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash {{ .chezmoi.homeDir }}/tmp/skills/hooks/after-compact.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

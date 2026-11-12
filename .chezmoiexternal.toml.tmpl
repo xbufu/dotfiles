@@ -1,0 +1,41 @@
+{{- /* Claude skills/agents with a healthy upstream (personal Linux hosts). Skills without one live in private_dot_claude/skills. */ -}}
+{{- if and .personal (ne .kind "windows") }}
+[".claude/skills/apple-design"]
+  type = "archive"
+  url = "https://github.com/dickwu/apple-design-skill/archive/HEAD.tar.gz"
+  exact = true
+  stripComponents = 1
+  refreshPeriod = "168h"
+
+[".claude/skills/find-skills"]
+  type = "archive"
+  url = "https://github.com/vercel-labs/skills/archive/HEAD.tar.gz"
+  exact = true
+  stripComponents = 3
+  include = ["*/skills/find-skills", "*/skills/find-skills/**"]
+  refreshPeriod = "168h"
+
+[".claude/skills/hallmark"]
+  type = "archive"
+  url = "https://github.com/nutlope/hallmark/archive/HEAD.tar.gz"
+  exact = true
+  stripComponents = 3
+  include = ["*/skills/hallmark", "*/skills/hallmark/**"]
+  refreshPeriod = "168h"
+
+[".claude/skills/impeccable"]
+  type = "archive"
+  url = "https://github.com/pbakaus/impeccable/archive/HEAD.tar.gz"
+  exact = true
+  stripComponents = 4
+  include = ["*/.claude/skills/impeccable", "*/.claude/skills/impeccable/**"]
+  refreshPeriod = "168h"
+{{ range list "asset-producer" "documenter" "finish-reviewer" "manual-edit-applier" }}
+[".claude/agents/impeccable-{{ . }}.md"]
+  type = "archive-file"
+  url = "https://github.com/pbakaus/impeccable/archive/HEAD.tar.gz"
+  stripComponents = 1
+  path = ".claude/agents/impeccable-{{ . }}.md"
+  refreshPeriod = "168h"
+{{ end -}}
+{{- end }}
