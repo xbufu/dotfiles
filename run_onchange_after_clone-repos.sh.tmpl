@@ -1,0 +1,62 @@
+{{- if and .personal (ne .kind "windows") -}}
+#!/bin/bash
+# Clone the repos of the home folder layout when missing (list from workstation tools/repo-list.sh, WSL, 2026-11-12).
+# Existing folders are never touched; updates stay manual (git pull). Edit the list to add a repo, chezmoi apply reruns it.
+# Not in the list: dotfiles and workstation (chezmoi source / ~/workstation), skills (run_after_claude-own-skills),
+# worktrees (git worktree add), non-git folders like ~/stacks (copy them).
+set -u
+# accept-new: no TTY under Ansible, known_hosts is not synced; trusts the first host key seen
+export GIT_SSH_COMMAND="ssh -o BatchMode=yes -o StrictHostKeyChecking=accept-new"
+failed=""
+while read -r path url branch; do
+    [ -n "$path" ] || continue
+    dir="$HOME/$path"
+    [ -e "$dir" ] && continue
+    mkdir -p "$(dirname "$dir")"
+    if git clone -q "$url" "$dir"; then
+        [ "${branch:-main}" = main ] || git -C "$dir" switch -q "$branch" || failed="$failed $path(branch $branch)"
+    else
+        failed="$failed $path"
+    fi
+done <<'EOF'
+code/apps/atlas ssh://git@git.bufu-sec.me:2222/bufu/atlas.git
+code/apps/jot ssh://git@git.bufu-sec.me:2222/bufu/jot.git
+code/apps/orbit ssh://git@git.bufu-sec.me:2222/bufu/orbit.git
+code/forks/ECC https://github.com/affaan-m/ECC.git
+code/forks/unslop https://github.com/heydamir/unslop
+code/infra/ansible ssh://git@git.bufu-sec.me/bufu/ansible.git
+code/infra/ansible-roles/ansible-role-ad_asreproasting ssh://git@git.bufu-sec.me:2222/bufu/ansible-role-ad_asreproasting.git
+code/infra/ansible-roles/ansible-role-ad_bdc ssh://git@git.bufu-sec.me:2222/bufu/ansible-role-ad_bdc.git
+code/infra/ansible-roles/ansible-role-ad_constrained_delegation ssh://git@git.bufu-sec.me:2222/bufu/ansible-role-ad_constrained_delegation.git
+code/infra/ansible-roles/ansible-role-ad_dhcp_lease ssh://git@git.bufu-sec.me:2222/bufu/ansible-role-ad_dhcp_lease.git
+code/infra/ansible-roles/ansible-role-ad_gpos ssh://git@git.bufu-sec.me:2222/bufu/ansible-role-ad_gpos.git
+code/infra/ansible-roles/ansible-role-ad_kerberoasting ssh://git@git.bufu-sec.me:2222/bufu/ansible-role-ad_kerberoasting.git
+code/infra/ansible-roles/ansible-role-ad_member ssh://git@git.bufu-sec.me:2222/bufu/ansible-role-ad_member.git
+code/infra/ansible-roles/ansible-role-ad_mssql ssh://git@git.bufu-sec.me:2222/bufu/ansible-role-ad_mssql.git
+code/infra/ansible-roles/ansible-role-ad_pdc ssh://git@git.bufu-sec.me:2222/bufu/ansible-role-ad_pdc.git
+code/infra/ansible-roles/ansible-role-ad_random_content ssh://git@git.bufu-sec.me:2222/bufu/ansible-role-ad_random_content.git
+code/infra/ansible-roles/ansible-role-ad_unconstrained_delegation ssh://git@git.bufu-sec.me:2222/bufu/ansible-role-ad_unconstrained_delegation.git
+code/infra/ansible-roles/ansible-role-ansible ssh://git@git.bufu-sec.me:2222/bufu/ansible-role-ansible.git
+code/infra/ansible-roles/ansible-role-backblaze ssh://git@git.bufu-sec.me:2222/bufu/ansible-role-backblaze.git
+code/infra/ansible-roles/ansible-role-base_vm ssh://git@git.bufu-sec.me:2222/bufu/ansible-role-base_vm.git
+code/infra/ansible-roles/ansible-role-cloud_init ssh://git@git.bufu-sec.me:2222/bufu/ansible-role-cloud_init.git
+code/infra/ansible-roles/ansible-role-docker ssh://git@git.bufu-sec.me:2222/bufu/ansible-role-docker.git
+code/infra/ansible-roles/ansible-role-kali ssh://git@git.bufu-sec.me:2222/bufu/ansible-role-kali.git
+code/infra/ansible-roles/ansible-role-packer ssh://git@git.bufu-sec.me:2222/bufu/ansible-role-packer.git
+code/infra/ansible-roles/ansible-role-terraform ssh://git@git.bufu-sec.me:2222/bufu/ansible-role-terraform.git
+code/infra/ansible-roles/ansible-role-windows_base_vm ssh://git@git.bufu-sec.me:2222/bufu/ansible-role-windows_base_vm.git
+code/infra/ansible-roles/ansible-role-windows_ssh ssh://git@git.bufu-sec.me:2222/bufu/ansible-role-windows_ssh.git
+code/infra/docker ssh://git@git.bufu-sec.me/bufu/docker.git
+code/infra/opentofu ssh://git@git.bufu-sec.me/bufu/OpenTofu.git
+code/infra/packer ssh://git@git.bufu-sec.me:2222/bufu/packer.git
+code/tools/OrpheusDL git@github.com:xbufu/OrpheusDL.git
+code/tools/OrpheusDL/sample-gui https://github.com/bascurtiz/OrpheusDL-GUI
+code/tools/domain-check git@github.com:xbufu/domain-checker.git
+code/tools/domain-sites git@gitlab.com:xbufu/domain-sites.git chore/parking-only
+code/tools/seadrive-extension/seafile-shell-ext git@github.com:xbufu/seafile-shell-ext.git dolphin-extension
+code/tools/terraform-provider-unifi git@github.com:xbufu/terraform-provider-unifi.git fix/zone-policy-app-ids
+uni/hm/kryptographie/blatt01 git@gitlab.lrz.de:kryptographie/blatt01.git
+EOF
+[ -z "$failed" ] || echo "clone-repos: failed:$failed" >&2
+exit 0
+{{ end -}}
