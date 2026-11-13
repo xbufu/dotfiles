@@ -38,6 +38,20 @@ Videos
 .claude/**
 {{ end }}
 {{ if not .personal }}
+{{- /* Without the age key, every encrypted file fails ("encryption not configured").
+       Ignore the target of each encrypted_* source file, so new secrets need no entry here. */}}
+{{- range glob (joinPath .chezmoi.sourceDir "**/encrypted_*") }}
+{{-   $target := list }}
+{{-   range splitList "/" (trimPrefix (printf "%s/" $.chezmoi.sourceDir) .) }}
+{{-     $name := regexReplaceAll "^((encrypted|private|readonly|empty|executable|exact|create|modify|remove)_)+" . "" }}
+{{-     $name = regexReplaceAll "^dot_" $name "." }}
+{{-     $name = regexReplaceAll "^literal_" $name "" }}
+{{-     $target = append $target $name }}
+{{-   end }}
+{{- /* Without encryption configured chezmoi keeps the .age suffix in the target name. */}}
+{{ join "/" $target }}
+{{ join "/" $target | trimSuffix ".age" }}
+{{- end }}
 .config/shell/secrets.sh*
 .config/secrets/
 .config/secrets/**
@@ -50,6 +64,15 @@ openvpn/**
 {{ if ne .kind "windows" }}
 .wslconfig
 AppData/
+{{ end }}
+{{ if eq .kind "kali" }}
+# Throwaway Kali VMs: no git identity, no GitHub/GitLab CLI config
+.gitconfig
+.gitconfig_github
+.gitconfig_forgejo
+.gitconfig-hm
+.config/gh/
+.config/glab-cli/
 {{ end }}
 {{ if eq .kind "wsl" }}
 # ~/.aws is a symlink to the Windows profile in WSL

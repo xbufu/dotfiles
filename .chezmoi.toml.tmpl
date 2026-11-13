@@ -8,6 +8,8 @@
 {{-   $kind = "wsl" -}}
 {{- else if eq (dig "osRelease" "id" "" .chezmoi) "cachyos" -}}
 {{-   $kind = "desktop" -}}
+{{- else if eq (dig "osRelease" "id" "" .chezmoi) "kali" -}}
+{{-   $kind = "kali" -}}
 {{- end -}}
 
 {{- /* WSL inherits the Windows hostname, so one name covers both. */ -}}
