@@ -23,6 +23,7 @@
 .local/bin/kwin-new-desktop
 .local/share/applications/kwin-new-desktop.desktop
 .local/bin/brave-notify-sound
+.local/share/konsole/
 .config/systemd/user/brave-notify-sound.service
 .config/systemd/user/graphical-session.target.wants/brave-notify-sound.service
 .p10k.zsh
