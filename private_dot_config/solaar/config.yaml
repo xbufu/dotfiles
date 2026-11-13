@@ -1,0 +1,49 @@
+- 1.1.20
+- _NAME: G Pro Wireless Gaming Mouse
+  _absent: [hi-res-scroll, lowres-scroll-mode, hires-smooth-invert, hires-smooth-resolution, hires-scroll-mode, scroll-ratchet, scroll-ratchet-torque, smart-shift,
+    thumb-scroll-invert, thumb-scroll-mode, report_rate_extended, pointer_speed, dpi_extended, speed-change, backlight, backlight_level, backlight_duration_hands_out,
+    backlight_duration_hands_in, backlight_duration_powered, backlight-timed, rgb_control, rgb_zone_, per-key-lighting, brightness_control, rgb_idle_effect,
+    rgb_idle_timeout, rgb_sleep_timeout, rgb_startup_animation, rgb_shutdown_animation, fn-swap, reprogrammable-keys, persistent-remappable-keys, divert-keys,
+    disable-keyboard-keys, force-sensing, crown-smooth, divert-crown, divert-gkeys, m-key-leds, mr-key-led, multiplatform, change-host, gesture2-gestures,
+    gesture2-divert, gesture2-params, analog-button-tuning, haptic-level, haptic-play, sidetone, equalizer, adc_power_management, headset-eco-mode, headset-do-not-disturb,
+    headset-mic-mute, headset-mic-snr, headset-ai-nr, headset-ai-nr-level, headset-sidetone, headset-mic-gain, headset-mix-balance, headset-auto-sleep,
+    headset-onboard-eq, headset-eq-active-preset, headset-advanced-eq, headset_led_control, headset-onboard-effect, headset_per_zone_lighting, headset-signature-startup,
+    headset-signature-shutdown, headset-signature-passive, logivoice-nr-state, logivoice-ng-state, logivoice-comp-state, logivoice-deesser-state, logivoice-depopper-state,
+    logivoice-limiter-state, logivoice-hpf-state]
+  _battery: 4097
+  _config_cookie: [84, 142]
+  _modelId: 4079C0880000
+  _serial: EA036C30
+  _unitId: EA036C30
+  _wpid: '4079'
+  dpi: 1200
+  led_control: false
+  onboard_profiles: 1
+  report_rate: 1
+- _NAME: MX Mechanical Mini
+  _absent: [hi-res-scroll, lowres-scroll-mode, hires-smooth-invert, hires-smooth-resolution, hires-scroll-mode, scroll-ratchet, scroll-ratchet-torque, smart-shift,
+    thumb-scroll-invert, thumb-scroll-mode, onboard_profiles, report_rate, report_rate_extended, pointer_speed, dpi, dpi_extended, speed-change, backlight-timed,
+    led_control, led_zone_, rgb_control, rgb_zone_, per-key-lighting, brightness_control, rgb_idle_effect, rgb_idle_timeout, rgb_sleep_timeout, rgb_startup_animation,
+    rgb_shutdown_animation, reprogrammable-keys, persistent-remappable-keys, force-sensing, crown-smooth, divert-crown, divert-gkeys, m-key-leds, mr-key-led,
+    gesture2-gestures, gesture2-divert, gesture2-params, analog-button-tuning, haptic-level, haptic-play, sidetone, equalizer, adc_power_management, headset-eco-mode,
+    headset-do-not-disturb, headset-mic-mute, headset-mic-snr, headset-ai-nr, headset-ai-nr-level, headset-sidetone, headset-mic-gain, headset-mix-balance,
+    headset-auto-sleep, headset-onboard-eq, headset-eq-active-preset, headset-advanced-eq, headset_led_control, headset-onboard-effect, headset_per_zone_lighting,
+    headset-signature-startup, headset-signature-shutdown, headset-signature-passive, logivoice-nr-state, logivoice-ng-state, logivoice-comp-state, logivoice-deesser-state,
+    logivoice-depopper-state, logivoice-limiter-state, logivoice-hpf-state]
+  _battery: 4100
+  _config_cookie: [84, 143]
+  _modelId: B36700000000
+  _serial: 5DF67644
+  _unitId: 5DF67644
+  _wpid: B367
+  backlight: 1
+  backlight_duration_hands_in: 30
+  backlight_duration_hands_out: 15
+  backlight_duration_powered: 300
+  backlight_level: 2
+  change-host: null
+  disable-keyboard-keys: {1: false, 4: false, 8: false, 16: false}
+  divert-keys: {212: 0, 226: 0, 227: 0, 231: 0, 232: 0, 233: 0, 259: 0, 264: 0, 266: 0, 267: 0, 268: 0, 269: 0, 270: 0, 271: 0, 272: 0, 273: 0, 274: 0,
+    277: 0, 279: 0, 280: 0, 281: 0, 282: 0, 283: 0, 284: 0, 286: 0, 316: 0, 321: 0}
+  fn-swap: false
+  multiplatform: 0

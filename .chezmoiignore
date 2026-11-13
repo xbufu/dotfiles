@@ -19,6 +19,7 @@
 {{ if ne .kind "desktop" }}
 .config/fish/
 .config/autostart/
+.config/solaar/
 .p10k.zsh
 {{ end }}
 {{ if or (not .personal) (eq .kind "windows") }}

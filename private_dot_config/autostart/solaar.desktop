@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Solaar
+Comment=Logitech devices: battery, pairing, settings (starts hidden in the tray)
+Exec=solaar --window=hide
+Icon=solaar
+X-GNOME-Autostart-enabled=true
