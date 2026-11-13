@@ -18,6 +18,8 @@
 {{ end }}
 {{ if ne .kind "desktop" }}
 .config/fish/
+# Brave flags for the NVIDIA workstation
+.config/brave-flags.conf
 .config/autostart/
 .config/solaar/
 .local/bin/kwin-new-desktop
