@@ -3,7 +3,11 @@
 # Before the CachyOS config: powerlevel10k's instant prompt must come after anything that prints or asks.
 [ -f ~/.config/fj/env ] && . ~/.config/fj/env
 
+# The CachyOS config runs `pacman -Qtdq` at every start (~0.4 s) for its cleanup alias; skip that and set the alias lazily below
+pacman() { [[ "$1" == -Qtdq ]] || command pacman "$@"; }
 source /usr/share/cachyos-zsh-config/cachyos-config.zsh
+unfunction pacman
+alias cleanup='sudo pacman -Rsn $(pacman -Qtdq)'
 
 # --- Personal additions ---
 

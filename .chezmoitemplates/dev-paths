@@ -2,16 +2,24 @@
 export PATH=$PATH:$HOME/.local/bin
 
 # pipx completions (bash and zsh)
-command -v register-python-argcomplete >/dev/null && command -v pipx >/dev/null && eval "$(register-python-argcomplete pipx)"
+# cached: generating it starts Python (~0.1 s); delete the file after a pipx update to regenerate
+if command -v register-python-argcomplete >/dev/null && command -v pipx >/dev/null; then
+    [ -s ~/.cache/pipx-completion.sh ] || { mkdir -p ~/.cache && register-python-argcomplete pipx > ~/.cache/pipx-completion.sh; }
+    . ~/.cache/pipx-completion.sh
+fi
 
 # Go
 export GOPATH=$HOME/.go
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:/usr/local/go/bin
 
-# nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm completion (bash and zsh)
-# Arch/CachyOS: nvm from pacman lives in /usr/share/nvm; node versions still go to $NVM_DIR
-[ ! -s "$NVM_DIR/nvm.sh" ] && [ -s /usr/share/nvm/nvm.sh ] && \. /usr/share/nvm/nvm.sh && \. /usr/share/nvm/bash_completion
+# Node: fnm where installed (fast, reads .nvmrc), otherwise nvm. nvm.sh adds ~1 s to every shell start.
+if command -v fnm >/dev/null; then
+    eval "$(fnm env --use-on-cd --shell "$([ -n "$ZSH_VERSION" ] && echo zsh || echo bash)")"
+else
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm completion (bash and zsh)
+    # Arch/CachyOS: nvm from pacman lives in /usr/share/nvm; node versions still go to $NVM_DIR
+    [ ! -s "$NVM_DIR/nvm.sh" ] && [ -s /usr/share/nvm/nvm.sh ] && \. /usr/share/nvm/nvm.sh && \. /usr/share/nvm/bash_completion
+fi
