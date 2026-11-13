@@ -11,6 +11,13 @@ if command -v register-python-argcomplete >/dev/null && command -v pipx >/dev/nu
     . ~/.cache/pipx-completion.sh
 fi
 
+# Android SDK (role android in workstation): Expo/Gradle need ANDROID_HOME, React Native 0.88 needs JDK 17
+if [ -d "$HOME/Android/Sdk" ]; then
+    export ANDROID_HOME="$HOME/Android/Sdk"
+    export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
+fi
+[ -d /usr/lib/jvm/java-17-openjdk ] && export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+
 # Go
 export GOPATH=$HOME/.go
 export PATH=$PATH:$GOPATH/bin
