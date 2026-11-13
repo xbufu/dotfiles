@@ -23,6 +23,11 @@
 .local/bin/kwin-new-desktop
 .local/share/applications/kwin-new-desktop.desktop
 .p10k.zsh
+# Home folders as links into SeaDrive libraries (needs seadrive-gui from the workstation repo)
+Documents
+Music
+Pictures
+Videos
 {{ end }}
 {{ if or (not .personal) (eq .kind "windows") }}
 .claude
