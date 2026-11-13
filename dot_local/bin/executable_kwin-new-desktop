@@ -1,0 +1,7 @@
+#!/bin/sh
+# New virtual desktop at the end and switch to it (like Win+Ctrl+D on Windows). Bound to Meta+Ctrl+D.
+set -eu
+vdm() { qdbus6 org.kde.KWin /VirtualDesktopManager "org.kde.KWin.VirtualDesktopManager.$@"; }
+n=$(vdm count)
+vdm createDesktop "$n" ""
+qdbus6 org.kde.kglobalaccel /component/kwin org.kde.kglobalaccel.Component.invokeShortcut "Switch to Desktop $((n + 1))"

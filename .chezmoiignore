@@ -20,6 +20,8 @@
 .config/fish/
 .config/autostart/
 .config/solaar/
+.local/bin/kwin-new-desktop
+.local/share/applications/kwin-new-desktop.desktop
 .p10k.zsh
 {{ end }}
 {{ if or (not .personal) (eq .kind "windows") }}
