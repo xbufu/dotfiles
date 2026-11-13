@@ -29,6 +29,7 @@
 .config/systemd/user/brave-notify-sound.service
 .config/systemd/user/graphical-session.target.wants/brave-notify-sound.service
 .local/bin/plasma-taskbar-sync
+.config/pipewire/pipewire-pulse.conf.d/10-qemu-min-quantum.conf
 .config/systemd/user/plasma-taskbar-sync.service
 .config/systemd/user/plasma-taskbar-sync.path
 .config/systemd/user/graphical-session.target.wants/plasma-taskbar-sync.path
