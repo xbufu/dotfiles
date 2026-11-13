@@ -1,0 +1,4 @@
+# tldr-Seiten automatisch aktualisieren, wenn der Cache aelter als 30 Tage ist
+[updates]
+auto_update = true
+auto_update_interval_hours = 720
