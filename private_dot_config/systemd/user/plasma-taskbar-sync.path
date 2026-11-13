@@ -1,0 +1,10 @@
+[Unit]
+Description=Watch the Plasma panel config for taskbar changes
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Path]
+PathChanged=%h/.config/plasma-org.kde.plasma.desktop-appletsrc
+
+[Install]
+WantedBy=graphical-session.target

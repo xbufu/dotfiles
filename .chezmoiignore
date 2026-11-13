@@ -28,6 +28,10 @@
 .local/share/konsole/
 .config/systemd/user/brave-notify-sound.service
 .config/systemd/user/graphical-session.target.wants/brave-notify-sound.service
+.local/bin/plasma-taskbar-sync
+.config/systemd/user/plasma-taskbar-sync.service
+.config/systemd/user/plasma-taskbar-sync.path
+.config/systemd/user/graphical-session.target.wants/plasma-taskbar-sync.path
 .p10k.zsh
 # Home folders as links into SeaDrive libraries (needs seadrive-gui from the workstation repo)
 Documents

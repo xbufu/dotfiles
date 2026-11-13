@@ -1,0 +1,6 @@
+[Unit]
+Description=Copy pinned taskbar apps from the main monitor to the others
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/plasma-taskbar-sync

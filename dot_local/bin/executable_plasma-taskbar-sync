@@ -1,0 +1,28 @@
+#!/bin/sh
+# Copy the pinned apps of the main monitor's taskbar (Plasma screen 0 = primary output)
+# to the taskbars on the other monitors. Run by plasma-taskbar-sync.path whenever Plasma
+# saves its panel config; does nothing when all taskbars already match, so it cannot loop.
+exec qdbus6 org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript '
+var source = null, changed = 0;
+panels().forEach(function (p) {
+    if (p.screen !== 0) return;
+    p.widgets("org.kde.plasma.icontasks").forEach(function (w) {
+        w.currentConfigGroup = ["General"];
+        source = w.readConfig("launchers", []);
+    });
+});
+if (source !== null) {
+    panels().forEach(function (p) {
+        if (p.screen === 0) return;
+        p.widgets("org.kde.plasma.icontasks").forEach(function (w) {
+            w.currentConfigGroup = ["General"];
+            if (String(w.readConfig("launchers", [])) !== String(source)) {
+                w.writeConfig("launchers", source);
+                w.reloadConfig();
+                changed++;
+            }
+        });
+    });
+}
+print("synced=" + changed);
+'
