@@ -2,9 +2,12 @@
 export PATH=$PATH:$HOME/.local/bin
 
 # pipx completions (bash and zsh)
-# cached: generating it starts Python (~0.1 s); delete the file after a pipx update to regenerate
+# cached: generating it starts Python (~0.1 s). Rebuilt when pipx is reinstalled or updated:
+# an install changes the file's ctime, unlike its mtime, which package managers keep from the build.
 if command -v register-python-argcomplete >/dev/null && command -v pipx >/dev/null; then
-    [ -s ~/.cache/pipx-completion.sh ] || { mkdir -p ~/.cache && register-python-argcomplete pipx > ~/.cache/pipx-completion.sh; }
+    if [ ! -s ~/.cache/pipx-completion.sh ] || [ -n "$(find -L "$(command -v pipx)" -cnewer ~/.cache/pipx-completion.sh)" ]; then
+        mkdir -p ~/.cache && register-python-argcomplete pipx > ~/.cache/pipx-completion.sh
+    fi
     . ~/.cache/pipx-completion.sh
 fi
 
