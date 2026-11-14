@@ -28,6 +28,7 @@
 .local/share/applications/kwin-new-desktop.desktop
 .local/bin/firefox-start
 .local/share/applications/firefox.desktop
+.local/share/flatpak/overrides/com.rtosta.zapzap
 .local/bin/brave-notify-sound
 .local/share/konsole/
 .config/systemd/user/brave-notify-sound.service

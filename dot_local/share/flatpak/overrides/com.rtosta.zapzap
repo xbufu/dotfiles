@@ -1,0 +1,6 @@
+[Context]
+filesystems=home;
+
+[Environment]
+# Camera preview in calls stays black with the GPU path in QtWebEngine (NVIDIA)
+QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu
