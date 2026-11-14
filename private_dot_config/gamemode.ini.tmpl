@@ -1,0 +1,9 @@
+{{- if eq .device "workstation" -}}
+; gamemode runs these when a game starts/ends (Steam launch option: gamemoderun %command%).
+; VRR stays off on the desktop: KWin "Automatic" toggled it for every fullscreen
+; window (e.g. the Spectacle region overlay) and made the screens flicker.
+; Only the main monitor (DP-5) gets VRR, and only while a game runs.
+[custom]
+start=kscreen-doctor output.DP-5.vrrpolicy.automatic
+end=kscreen-doctor output.DP-5.vrrpolicy.never
+{{- end }}

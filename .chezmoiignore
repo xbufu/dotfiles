@@ -20,6 +20,7 @@
 .config/fish/
 # Brave flags for the NVIDIA workstation
 .config/brave-flags.conf
+.config/gamemode.ini
 .config/autostart/
 .config/solaar/
 .local/bin/kwin-new-desktop
