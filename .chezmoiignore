@@ -21,6 +21,7 @@
 # Brave flags for the NVIDIA workstation
 .config/brave-flags.conf
 .config/gamemode.ini
+.config/systemd/user/arch-update.timer.d/
 .config/autostart/
 .config/solaar/
 .local/bin/kwin-new-desktop
