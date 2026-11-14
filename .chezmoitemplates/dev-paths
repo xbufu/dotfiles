@@ -25,7 +25,7 @@ export PATH=$PATH:/usr/local/go/bin
 
 # Node: fnm where installed (fast, reads .nvmrc), otherwise nvm. nvm.sh adds ~1 s to every shell start.
 if command -v fnm >/dev/null; then
-    eval "$(fnm env --use-on-cd --shell "$([ -n "$ZSH_VERSION" ] && echo zsh || echo bash)")"
+    eval "$(fnm env --use-on-cd --log-level quiet --shell "$([ -n "$ZSH_VERSION" ] && echo zsh || echo bash)")"
 else
     export NVM_DIR="$HOME/.nvm"
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
