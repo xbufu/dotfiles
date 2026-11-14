@@ -73,6 +73,12 @@ user_pref("extensions.formautofill.creditCards.enabled", false);
 
 // Middle-clicked bookmarks open in a background tab, like links
 user_pref("browser.tabs.loadBookmarksInBackground", true);
-// Each machine keeps its own homepage (the workstation forces about:home for its start wrapper)
+// Start pages: Firefox has one setting for startup and new windows. On Linux, new windows show
+// about:home and ~/.local/bin/firefox-start adds the start pages on the first start only.
+// Not synced, so each machine keeps its own start setup.
 user_pref("services.sync.prefs.sync.browser.startup.homepage", false);
 user_pref("services.sync.prefs.sync.browser.startup.page", false);
+{{- if eq .kind "desktop" }}
+user_pref("browser.startup.page", 1);
+user_pref("browser.startup.homepage", "about:home");
+{{- end }}

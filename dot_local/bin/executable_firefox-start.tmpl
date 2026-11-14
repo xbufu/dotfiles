@@ -1,0 +1,8 @@
+#!/bin/sh
+# Firefox start like Brave: the start pages open only when Firefox is not running yet and gets no URL.
+# A new window of a running Firefox shows only about:home (homepage from user.js).
+# Started by ~/.local/share/applications/firefox.desktop (chezmoi).
+if [ "$#" -eq 0 ] && ! pgrep -u "$(id -u)" -f '^/usr/lib/firefox/firefox' >/dev/null; then
+    set --{{ range .firefox.startupUrls }} {{ . | squote }}{{ end }}
+fi
+exec /usr/lib/firefox/firefox "$@"

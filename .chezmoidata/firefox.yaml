@@ -1,0 +1,9 @@
+# Firefox start pages: opened only when Firefox starts without a URL and is not running yet (like Brave).
+firefox:
+  startupUrls:
+    - https://mail.proton.me/u/0/inbox
+    - https://calendar.google.com/calendar/u/0/r/week
+    - https://jot.bufu-sec.me/today
+    - https://app.simplelogin.io/dashboard/
+    - https://www.reddit.com/?feed=home
+    - https://www.keybr.com/

@@ -1,6 +1,6 @@
 {{- if eq .kind "windows" -}}
 # Copy the shared Firefox user.js into every profile listed in profiles.ini.
-# Reruns when the prefs change: {{ include ".chezmoitemplates/firefox-user.js" | sha256sum }}
+# Reruns when the prefs change: {{ includeTemplate "firefox-user.js" . | sha256sum }}
 $ErrorActionPreference = 'Stop'
 $base = Join-Path $env:APPDATA 'Mozilla\Firefox'
 $ini  = Join-Path $base 'profiles.ini'
@@ -9,7 +9,7 @@ if (-not (Test-Path -LiteralPath $ini)) {
     exit 0
 }
 $userJs = @'
-{{ include ".chezmoitemplates/firefox-user.js" }}
+{{ includeTemplate "firefox-user.js" . }}
 '@
 foreach ($line in Get-Content -LiteralPath $ini) {
     if ($line -notmatch '^Path=(.+)$') { continue }

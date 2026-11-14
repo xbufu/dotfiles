@@ -1,0 +1,13 @@
+{{- if eq .kind "desktop" -}}
+#!/bin/bash
+# Firefox as default browser: web links, HTML files, mailto/webcal and KDE's browser setting.
+# Reruns when this file changes.
+set -euo pipefail
+xdg-settings set default-web-browser firefox.desktop
+xdg-mime default firefox.desktop text/html x-scheme-handler/http x-scheme-handler/https \
+    x-scheme-handler/mailto x-scheme-handler/webcal
+if command -v kwriteconfig6 >/dev/null; then
+    kwriteconfig6 --file kdeglobals --group General --key BrowserApplication firefox.desktop
+fi
+echo "default-browser: $(xdg-settings get default-web-browser)"
+{{- end }}

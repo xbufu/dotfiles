@@ -1,7 +1,7 @@
 {{- if eq .kind "desktop" -}}
 #!/bin/bash
 # Copy the shared Firefox user.js into every profile listed in profiles.ini.
-# Reruns when the prefs change: {{ include ".chezmoitemplates/firefox-user.js" | sha256sum }}
+# Reruns when the prefs change: {{ includeTemplate "firefox-user.js" . | sha256sum }}
 set -euo pipefail
 
 found=0
@@ -15,7 +15,7 @@ for base in "$HOME/.config/mozilla/firefox" "$HOME/.mozilla/firefox"; do
         esac
         [ -d "$dir" ] || continue
         cat > "$dir/user.js" <<'USERJS'
-{{ include ".chezmoitemplates/firefox-user.js" }}
+{{ includeTemplate "firefox-user.js" . }}
 USERJS
         echo "firefox-userjs: $dir/user.js"
         found=1

@@ -1,0 +1,6 @@
+{{- /* Firefox's own desktop entry with the main start routed through ~/.local/bin/firefox-start.
+       Rebuilt from the package file on every apply; "New Window"/"Private Window" stay direct. */ -}}
+{{- $pkg := "/usr/share/applications/firefox.desktop" -}}
+{{- if stat $pkg -}}
+{{- output "cat" $pkg | regexReplaceAll "(?m)^Exec=/usr/lib/firefox/firefox %u$" (printf "Exec=%s/.local/bin/firefox-start %%u" .chezmoi.homeDir) -}}
+{{- end -}}
