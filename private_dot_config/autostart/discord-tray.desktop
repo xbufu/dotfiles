@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Discord
+Comment=Discord minimiert im Tray starten (eigener Name, damit Discord die Datei nicht ueberschreibt)
+Icon=discord
+Exec=/usr/bin/discord --start-minimized
+Terminal=false
+X-GNOME-Autostart-enabled=true
