@@ -1,0 +1,25 @@
+{{- if eq .kind "desktop" -}}
+#!/bin/bash
+# Copy the shared Firefox user.js into every profile listed in profiles.ini.
+# Reruns when the prefs change: {{ include ".chezmoitemplates/firefox-user.js" | sha256sum }}
+set -euo pipefail
+
+found=0
+for base in "$HOME/.config/mozilla/firefox" "$HOME/.mozilla/firefox"; do
+    ini="$base/profiles.ini"
+    [ -f "$ini" ] || continue
+    while IFS= read -r path; do
+        case "$path" in
+            /*) dir="$path" ;;
+            *) dir="$base/$path" ;;
+        esac
+        [ -d "$dir" ] || continue
+        cat > "$dir/user.js" <<'USERJS'
+{{ include ".chezmoitemplates/firefox-user.js" }}
+USERJS
+        echo "firefox-userjs: $dir/user.js"
+        found=1
+    done < <(sed -n 's/^Path=//p' "$ini")
+done
+[ "$found" -eq 1 ] || echo "firefox-userjs: no Firefox profile found, skipped (start Firefox once, then chezmoi apply)" >&2
+{{- end }}
