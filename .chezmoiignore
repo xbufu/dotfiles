@@ -24,6 +24,7 @@
 .config/systemd/user/arch-update.timer.d/
 .config/autostart/
 .config/solaar/
+.config/opencode/
 .local/bin/kwin-new-desktop
 .local/share/applications/kwin-new-desktop.desktop
 .local/bin/firefox-start

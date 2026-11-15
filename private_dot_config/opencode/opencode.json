@@ -1,0 +1,31 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "llama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "llama.cpp (lokal)",
+      "options": { "baseURL": "http://127.0.0.1:8080/v1" },
+      "models": {
+        "ornith-1.5-35b-a3b": {
+          "name": "Ornith 1.5 35B-A3B (schnell)",
+          "limit": { "context": 131072, "output": 32768 }
+        },
+        "qwen3.8-27b": {
+          "name": "Qwen3.8 27B (dicht, 64k)",
+          "limit": { "context": 65536, "output": 16384 }
+        },
+        "qwen3.8-27b-heretic": {
+          "name": "Qwen3.8 27B Heretic (nur Security, 64k)",
+          "limit": { "context": 65536, "output": 16384 }
+        },
+        "ornith-1.5-122b": {
+          "name": "Ornith 1.5 122B (stark, langsam)",
+          "limit": { "context": 131072, "output": 32768 }
+        }
+      }
+    }
+  },
+  "model": "llama/ornith-1.5-35b-a3b",
+  "small_model": "llama/ornith-1.5-35b-a3b",
+  "permission": { "bash": "ask" }
+}
