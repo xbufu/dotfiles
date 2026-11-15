@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Tailscale
+Comment=Tailscale-Tray (in der CLI eingebaut, braucht den User als Operator)
+Icon=network-vpn
+Exec=/usr/bin/tailscale systray
+Terminal=false
+X-GNOME-Autostart-enabled=true
