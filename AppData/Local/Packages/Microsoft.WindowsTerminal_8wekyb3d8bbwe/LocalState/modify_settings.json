@@ -1,0 +1,27 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- /* Shared settings only. profiles.list and defaultProfile stay per machine: Terminal generates
+       them from the installed shells and WSL distros, and those differ between PCs. */ -}}
+{{- $s := dict -}}
+{{- if .chezmoi.stdin | trim -}}
+{{-   $s = fromJson .chezmoi.stdin -}}
+{{- end -}}
+{{- $shared := fromJson `{
+    "$help": "https://aka.ms/terminal-documentation",
+    "$schema": "https://aka.ms/terminal-profiles-schema",
+    "actions": [],
+    "copyFormatting": "none",
+    "copyOnSelect": false,
+    "keybindings": [
+        { "id": "Terminal.CopyToClipboard", "keys": "ctrl+c" },
+        { "id": "Terminal.PasteFromClipboard", "keys": "ctrl+v" },
+        { "id": "Terminal.DuplicatePaneAuto", "keys": "alt+shift+d" }
+    ],
+    "newTabMenu": [ { "type": "remainingProfiles" } ],
+    "schemes": [],
+    "themes": []
+}` -}}
+{{- range $k, $v := $shared -}}
+{{-   $s = setValueAtPath $k $v $s -}}
+{{- end -}}
+{{- $s = setValueAtPath "profiles.defaults" (fromJson `{ "bellStyle": "none", "font": { "size": 14 } }`) $s -}}
+{{- toPrettyJson "    " $s }}
