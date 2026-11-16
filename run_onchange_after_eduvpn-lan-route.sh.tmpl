@@ -1,0 +1,21 @@
+{{- if eq .device "workstation" -}}
+#!/bin/bash
+# eduVPN (HM) pushes 192.168.0.0/16 into the tunnel and its rules skip the default route, so the
+# homelab VLANs (DMZ 192.168.50.x with Forgejo, lab 192.168.40.x) went into the tunnel. A /16 route
+# via the LAN gateway in the main table wins over the tunnel; HM itself (10.x, 129.187.x) stays in it.
+set -euo pipefail
+
+dev=enp131s0
+route="192.168.0.0/16 192.168.10.254"
+
+command -v nmcli >/dev/null || { echo "eduvpn-lan-route: nmcli missing, skipped" >&2; exit 0; }
+con=$(nmcli -g GENERAL.CONNECTION device show "$dev" 2>/dev/null || true)
+[ -n "$con" ] || { echo "eduvpn-lan-route: no connection on $dev, skipped" >&2; exit 0; }
+
+if nmcli -g ipv4.routes connection show "$con" | grep -qF "$route"; then
+    exit 0
+fi
+nmcli connection modify "$con" +ipv4.routes "$route"
+nmcli device reapply "$dev"
+echo "eduvpn-lan-route: added $route to '$con'"
+{{- end }}
