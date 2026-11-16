@@ -81,4 +81,7 @@ user_pref("services.sync.prefs.sync.browser.startup.page", false);
 {{- if eq .kind "desktop" }}
 user_pref("browser.startup.page", 1);
 user_pref("browser.startup.homepage", "about:home");
+// Logout/shutdown kills Firefox (systemd), so the next start counts as a crash and restored the old
+// session on top of the start pages. History > Restore Previous Session still works by hand.
+user_pref("browser.sessionstore.resume_from_crash", false);
 {{- end }}
