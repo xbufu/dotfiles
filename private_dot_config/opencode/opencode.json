@@ -39,7 +39,7 @@
       },
       "models": {
         "qwen3.8-flash-next-iq3_s": {
-          "name": "Qwen3.8 Flash-Next (stark, erster Aufruf ~3 min)",
+          "name": "Qwen3.8 Flash-Next (abliteriert, erster Aufruf ~3 min)",
           "limit": {
             "context": 131072,
             "output": 32768
