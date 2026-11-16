@@ -84,4 +84,7 @@ user_pref("browser.startup.homepage", "about:home");
 // Logout/shutdown kills Firefox (systemd), so the next start counts as a crash and restored the old
 // session on top of the start pages. History > Restore Previous Session still works by hand.
 user_pref("browser.sessionstore.resume_from_crash", false);
+// KDE session management asks Firefox to save at logout, and Firefox then sets resume_session_once,
+// so the next start restored the old session anyway. user.js runs first and clears it.
+user_pref("browser.sessionstore.resume_session_once", false);
 {{- end }}
