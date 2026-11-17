@@ -1,13 +1,13 @@
 {{- if eq .device "workstation" -}}
 #!/bin/bash
-# Hardware-Helligkeit der LG-Seitenmonitore (DP-3/DP-4) per DDC/CI. KDE kann sie nicht steuern
-# ("Brightness control: unsupported"), der Wert liegt im Monitor selbst. Laeuft erneut, wenn sich diese Datei aendert.
+# Hardware brightness of the LG side monitors (DP-3/DP-4) via DDC/CI. KDE cannot control it
+# ("Brightness control: unsupported"); the value is stored in the monitor itself. Runs again when this file changes.
 set -u
 command -v ddcutil >/dev/null || { echo "monitor-brightness: ddcutil fehlt, uebersprungen" >&2; exit 0; }
 
 brightness=80
 for sn in 204MAUADPB54 206MAXSAE234; do
     timeout 30 ddcutil --sn "$sn" setvcp 10 "$brightness" \
-        || echo "monitor-brightness: $sn nicht erreichbar, uebersprungen" >&2
+        || echo "monitor-brightness: $sn not reachable, skipped" >&2
 done
 {{- end }}

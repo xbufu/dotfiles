@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=Discord
-Comment=Discord minimiert im Tray starten (eigener Name, damit Discord die Datei nicht ueberschreibt)
+Comment=Start Discord minimized to the tray (own file name so Discord does not overwrite it)
 Icon=discord
 Exec=/usr/bin/discord --start-minimized
 Terminal=false
