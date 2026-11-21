@@ -1,0 +1,5 @@
+{{- if eq .device "workstation" -}}
+# Stremio (libmpv): keep video decode off the Intel iGPU.
+# Arrow Lake-S on i915 + GuC hangs on Vulkan video decode (ANV), wedging the GPU.
+hwdec=no
+{{- end }}

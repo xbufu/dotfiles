@@ -21,6 +21,7 @@
 # Brave flags for the NVIDIA workstation
 .config/brave-flags.conf
 .config/gamemode.ini
+.config/mpv/mpv.conf
 .config/systemd/user/arch-update.timer.d/
 .config/autostart/
 .config/solaar/
@@ -30,6 +31,7 @@
 .local/bin/firefox-start
 .local/share/applications/firefox.desktop
 .local/share/flatpak/overrides/com.rtosta.zapzap
+.local/share/flatpak/overrides/com.stremio.Stremio
 .local/bin/brave-notify-sound
 .local/share/konsole/
 .config/systemd/user/brave-notify-sound.service
