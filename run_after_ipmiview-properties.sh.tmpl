@@ -1,0 +1,23 @@
+{{- /* Renders empty (skipped) where IPMIView isn't installed. Linux twin of run_after_ipmiview-properties.ps1.tmpl. */ -}}
+{{- if and (eq .kind "desktop") (stat "/opt/ipmiview") -}}
+#!/bin/sh
+# Supermicro IPMIView server list and saved logins. The AUR package (ipmiview) keeps them in
+# /opt/ipmiview (outside ~), so chezmoi can't manage them as plain files: this script runs on
+# every apply, decrypts the age copies in .ipmiview/ and rewrites any target that differs
+# (also reverting GUI changes). The package makes these files world-writable, so no sudo.
+# Decrypting here rather than in the template keeps the contents out of chezmoi diff output.
+set -eu
+identity={{ .chezmoi.config.age.identity | quote }}
+src_dir={{ joinPath .chezmoi.sourceDir ".ipmiview" | quote }}
+dst_dir=/opt/ipmiview
+
+for name in IPMIView.properties account.properties; do
+    src="$src_dir/$name.age"
+    dst="$dst_dir/$name"
+    want=$(age -d -i "$identity" "$src" | sha256sum)
+    have=$(sha256sum < "$dst" 2>/dev/null || true)
+    [ "$want" = "$have" ] && continue
+    age -d -i "$identity" "$src" > "$dst"
+    echo "ipmiview: updated $dst"
+done
+{{ end -}}
