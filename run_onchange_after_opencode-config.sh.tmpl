@@ -6,13 +6,19 @@
 # ECC's installer never overwrites an existing opencode.json, so this script writes it:
 # base, plus ECC's agent/command entries, plus the always-on Claude rules
 # (the ones without a paths: filter) as instructions, so both tools follow the same rules.
-# Skills in ~/.claude/skills and ~/.claude/CLAUDE.md are read by OpenCode itself.
+# Skills in ~/.claude/skills are read by OpenCode itself; ~/.claude/CLAUDE.md only while no
+# ~/.config/opencode/AGENTS.md exists, which caveman writes, so it is listed in instructions.
+# caveman (github juliusbrussee/caveman, pinned tag + commit): its installer adds the plugin
+# (./plugins/caveman, also in the base plugin list so rewrites keep it), commands, agents,
+# skills and an AGENTS.md block to ~/.config/opencode.
 # Plugins (npm, pinned) go in the base "plugin" list, not via "opencode plugin add":
 # this script rewrites opencode.json, which would drop them.
 # Runs again when the base config or the ECC version changes (run_onchange_).
 # base sha256: {{ include ".chezmoitemplates/opencode.json" | sha256sum }}
 set -eu
 ecc_version=2.2.3
+cave_tag=v4.2.0
+cave_commit=70f4f34e834893ea9af9f4fc6022266bd56d18b1
 cfg="$HOME/.config/opencode"
 cache="$HOME/.cache/ecc-opencode/$ecc_version"
 pkg="$cache/package"
@@ -53,6 +59,7 @@ cfg["command"] = {**ecc.get("command", {}), **base.get("command", {})}
 # OpenCode 2.x rejects ("must export a default definition"). Add it back once ECC ships a 2.x plugin.
 cfg["permission"] = {**ecc.get("permission", {}), **base.get("permission", {})}
 cfg["instructions"] = base.get("instructions", []) + [
+    "~/.claude/CLAUDE.md",
     "~/.claude/rules/own/*.md",
     "~/.claude/rules/ecc/common/*.md",
     "~/.claude/rules/ecc/devops/*.md",
@@ -61,5 +68,17 @@ with open(out_path, "w") as f:
     json.dump(cfg, f, indent=2)
     f.write("\n")
 PY
-echo "opencode-config: ECC $ecc_version installed, $cfg/opencode.json written"
+cave="$HOME/.cache/caveman-opencode/$cave_tag"
+if [ "$(git -C "$cave" rev-parse HEAD 2>/dev/null)" != "$cave_commit" ]; then
+    rm -rf "$cave"
+    git clone -q --depth 1 --branch "$cave_tag" https://github.com/juliusbrussee/caveman "$cave"
+    [ "$(git -C "$cave" rev-parse HEAD)" = "$cave_commit" ] \
+        || { echo "opencode-config: caveman $cave_tag is not commit $cave_commit" >&2; exit 1; }
+fi
+if ! node "$cave/installer/install.js" --only opencode --non-interactive --no-mcp-shrink \
+        < /dev/null > "$cave.log" 2>&1; then
+    echo "opencode-config: caveman install failed, see $cave.log" >&2
+    exit 1
+fi
+echo "opencode-config: ECC $ecc_version + caveman $cave_tag installed, $cfg/opencode.json written"
 {{ end -}}

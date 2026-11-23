@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": ["@dietrichgebert/ponytail@5.3.3"],
+  "plugin": ["@dietrichgebert/ponytail@5.3.3", "./plugins/caveman"],
   "provider": {
     "llama": {
       "npm": "@ai-sdk/openai-compatible",
