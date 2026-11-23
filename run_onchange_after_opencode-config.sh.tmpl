@@ -1,0 +1,63 @@
+{{- if and .personal (eq .kind "desktop") -}}
+#!/bin/sh
+# OpenCode config = own base (.chezmoitemplates/opencode.json: providers, models, permissions)
+# + ECC for OpenCode (npm package ecc-universal, pinned): agents, commands, custom tools
+# and the "opencode" profile skills, installed into ~/.config/opencode.
+# ECC's installer never overwrites an existing opencode.json, so this script writes it:
+# base, plus ECC's agent/command entries, plus the always-on Claude rules
+# (the ones without a paths: filter) as instructions, so both tools follow the same rules.
+# Skills in ~/.claude/skills and ~/.claude/CLAUDE.md are read by OpenCode itself.
+# Runs again when the base config or the ECC version changes (run_onchange_).
+# base sha256: {{ include ".chezmoitemplates/opencode.json" | sha256sum }}
+set -eu
+ecc_version=2.2.3
+cfg="$HOME/.config/opencode"
+cache="$HOME/.cache/ecc-opencode/$ecc_version"
+pkg="$cache/package"
+
+command -v npm >/dev/null || { echo "opencode-config: npm not installed, skipped" >&2; exit 0; }
+mkdir -p "$cfg"
+
+if [ ! -f "$pkg/.opencode/dist/index.js" ] || [ ! -d "$pkg/node_modules" ]; then
+    rm -rf "$cache"
+    mkdir -p "$cache"
+    cd "$cache"
+    npm pack --silent "ecc-universal@$ecc_version" >/dev/null
+    tar xzf "ecc-universal-$ecc_version.tgz"
+    # --ignore-scripts: no install scripts from the dependency tree
+    (cd package && npm install --omit=dev --ignore-scripts --no-audit --no-fund --silent)
+fi
+
+# The installer refuses to run over an opencode.json it did not write; park ours meanwhile.
+cd "$pkg"
+[ -f "$cfg/opencode.json" ] && mv "$cfg/opencode.json" "$cfg/opencode.json.pre-ecc"
+if ! node scripts/install-apply.js --target opencode --profile opencode > "$cache/install.log" 2>&1; then
+    [ -f "$cfg/opencode.json.pre-ecc" ] && mv "$cfg/opencode.json.pre-ecc" "$cfg/opencode.json"
+    echo "opencode-config: ECC install failed, see $cache/install.log" >&2
+    exit 1
+fi
+rm -f "$cfg/opencode.json.pre-ecc"
+
+python3 -I - "$cfg/opencode.json" "$pkg/.opencode/opencode.json" <<'PY'
+import json, sys
+out_path, ecc_path = sys.argv[1], sys.argv[2]
+base = json.loads(r'''{{ include ".chezmoitemplates/opencode.json" }}''')
+with open(ecc_path) as f:
+    ecc = json.load(f)
+cfg = dict(base)
+cfg["agent"] = {**ecc.get("agent", {}), **base.get("agent", {})}
+cfg["command"] = {**ecc.get("command", {}), **base.get("command", {})}
+# ECC's hook plugin ("./plugins") is left out: 2.2.3 uses the OpenCode 1.x plugin API, which
+# OpenCode 2.x rejects ("must export a default definition"). Add it back once ECC ships a 2.x plugin.
+cfg["permission"] = {**ecc.get("permission", {}), **base.get("permission", {})}
+cfg["instructions"] = base.get("instructions", []) + [
+    "~/.claude/rules/own/*.md",
+    "~/.claude/rules/ecc/common/*.md",
+    "~/.claude/rules/ecc/devops/*.md",
+]
+with open(out_path, "w") as f:
+    json.dump(cfg, f, indent=2)
+    f.write("\n")
+PY
+echo "opencode-config: ECC $ecc_version installed, $cfg/opencode.json written"
+{{ end -}}
