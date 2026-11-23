@@ -7,6 +7,8 @@
 # base, plus ECC's agent/command entries, plus the always-on Claude rules
 # (the ones without a paths: filter) as instructions, so both tools follow the same rules.
 # Skills in ~/.claude/skills and ~/.claude/CLAUDE.md are read by OpenCode itself.
+# Plugins (npm, pinned) go in the base "plugin" list, not via "opencode plugin add":
+# this script rewrites opencode.json, which would drop them.
 # Runs again when the base config or the ECC version changes (run_onchange_).
 # base sha256: {{ include ".chezmoitemplates/opencode.json" | sha256sum }}
 set -eu
